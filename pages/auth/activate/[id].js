@@ -3,6 +3,7 @@ import { withRouter } from "next/router";
 import { useState, useEffect } from "react";
 import jwt from "jsonwebtoken";
 import axios from "axios";
+import Link from "next/link";
 
 import { showSuccessMessage, showErrorMessage } from "../../../helpers/alert";
 import Layout from "../../../components/Layout";
@@ -70,13 +71,23 @@ const ActivateAccount = ({ router }) => {
           {success && showSuccessMessage(success)}
           {error && showErrorMessage(error)}
 
-          <button
-            disabled={isDisabled}
-            className="btn btn-outline-warning btn-block"
-            onClick={clickSubmit}
-          >
-            {buttonText}
-          </button>
+          {!success && (
+            <button
+              disabled={isDisabled}
+              className="btn btn-outline-warning btn-block"
+              onClick={clickSubmit}
+            >
+              {buttonText}
+            </button>
+          )}
+
+          {success && (
+            <Link href="/login">
+              <a className="btn btn-primary btn-block">
+                Przejdź do strony logowania
+              </a>
+            </Link>
+          )}
         </div>
       </div>
     </Layout>

@@ -37,7 +37,7 @@ const Delete = ({ token, user }) => {
 
       setState({
         ...state,
-        success: `Ogłoszenie ${response.data.name} zostało usunięte.`,
+        success: `Użytkownik został usunięty`,
         isButtonDisabled: true,
       });
     } catch (error) {
@@ -72,27 +72,17 @@ const Delete = ({ token, user }) => {
             </>
           )}
 
-          {success && (
-            <>
-              {showSuccessMessage(success)}
-              <br />
-              <p>Użytkownik został usunięty</p>
-            </>
-          )}
+          {success && <>{showSuccessMessage(success)}</>}
 
           {error && showErrorMessage(error)}
-          <br />
 
-          {success ||
-            (error && (
-              <>
-                <p>Wróć do listy użytkowników</p>
-
-                <Link href={"/admin/users"}>
-                  <a className="btn btn-primary">Użytkownicy</a>
-                </Link>
-              </>
-            ))}
+          {!!success || !!error ? (
+            <Link href={"/admin/users"}>
+              <a className="btn btn-primary btn-block">
+                Wróć do listy użytkowników
+              </a>
+            </Link>
+          ) : null}
         </div>
       </div>
     </Layout>

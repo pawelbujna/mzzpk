@@ -65,17 +65,14 @@ const Delete = ({ id, token }) => {
               </button>
             </>
           )}
+
           {success && <>{showSuccessMessage(success)}</>}
           {error && showErrorMessage(error)}
-          <br />
-          {success || error ? (
-            <>
-              <p>Wróć do ogłoszeń</p>
 
-              <Link href={"/articles"}>
-                <a className="btn btn-primary">Ogłoszenia</a>
-              </Link>
-            </>
+          {success || error ? (
+            <Link href={"/articles"}>
+              <a className="btn btn-primary btn-block">Wróć do ogłoszeń</a>
+            </Link>
           ) : null}
         </div>
       </div>

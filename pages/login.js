@@ -10,8 +10,8 @@ import { showSuccessMessage, showErrorMessage } from "../helpers/alert";
 
 const Login = () => {
   const [state, setState] = useState({
-    email: "pawel.bujna@olx.pl",
-    password: "111111",
+    email: "",
+    password: "",
     error: "",
     success: "",
     buttonText: "Zaloguj",
