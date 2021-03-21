@@ -5,6 +5,7 @@ import Layout from "../../../components/Layout";
 import Editor from "../../../components/Editor";
 import Dropzone from "../../../components/Dropzone";
 import withAdmin from "../../withAdmin";
+import Link from "next/link";
 
 import { showSuccessMessage, showErrorMessage } from "../../../helpers/alert";
 
@@ -117,18 +118,19 @@ const Create = ({ token }) => {
 
   return (
     <Layout>
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-          <h1>Dodaj ogłoszenie</h1>
+      <Link href={`/admin`}>
+        <a>Wróć do menu</a>
+      </Link>
+      <br />
+      <br />
+      <h1>Dodaj ogłoszenie</h1>
 
-          <br />
+      <br />
 
-          {success && showSuccessMessage(success)}
-          {error && showErrorMessage(error)}
+      {success && showSuccessMessage(success)}
+      {error && showErrorMessage(error)}
 
-          {createCategoryForm()}
-        </div>
-      </div>
+      {createCategoryForm()}
     </Layout>
   );
 };

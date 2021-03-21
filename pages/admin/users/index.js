@@ -3,10 +3,15 @@ import axios from "axios";
 import withAdmin from "../../withAdmin";
 import Link from "next/link";
 
-const Users = ({ users, token }) => {
-  const deleteUser = () => {};
+const Users = ({ users }) => {
+  const filteredUsers = users.filter((item) => !item.hidden);
   return (
     <Layout>
+      <Link href={`/admin`}>
+        <a>Wróć do menu</a>
+      </Link>
+      <br />
+      <br />
       <h1>Lista użytkowników</h1>
       <br />
       <table className="table">
@@ -20,7 +25,7 @@ const Users = ({ users, token }) => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => (
+          {filteredUsers.map((user, index) => (
             <tr key={`user-${index}`}>
               <th>{index}</th>
               <td>{user.name}</td>

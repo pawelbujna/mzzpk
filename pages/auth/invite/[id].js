@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import Layout from "../../../components/Layout";
 import axios from "axios";
 
+import PasswordStrengthBar from "react-password-strength-bar";
+
 import { showSuccessMessage, showErrorMessage } from "../../../helpers/alert";
 
 const Register = ({ router }) => {
@@ -12,6 +14,7 @@ const Register = ({ router }) => {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
     token: "",
     error: "",
     success: "",
@@ -45,6 +48,7 @@ const Register = ({ router }) => {
     token,
     usersEmail,
     password,
+    confirmPassword,
     error,
     success,
     buttonText,
@@ -53,6 +57,11 @@ const Register = ({ router }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (password != confirmPassword) {
+      setState({ ...state, error: "Hasła nie są takie same" });
+      return;
+    }
 
     setState({ ...state, buttonText: "Zapisuje...", isDisabled: true });
 
@@ -115,6 +124,23 @@ const Register = ({ router }) => {
             className="form-control"
             placeholder="Hasło"
             onChange={handleChange("password")}
+            required
+          />
+          <PasswordStrengthBar
+            password={password}
+            isRequireed={true}
+            scoreWords={["słabe", "słabe", "ok", "dobre", "świetne"]}
+            shortScoreWord="za krótkie"
+          />
+        </div>
+
+        <div className="form-group">
+          <input
+            value={confirmPassword}
+            type="password"
+            className="form-control"
+            placeholder="Powtórz hasło"
+            onChange={handleChange("confirmPassword")}
             required
           />
         </div>

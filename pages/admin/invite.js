@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Layout from "../../components/Layout";
 import withAdmin from "../withAdmin";
+import Link from "next/link";
 
 import { showSuccessMessage, showErrorMessage } from "../../helpers/alert";
 
@@ -75,15 +76,18 @@ const Invite = ({ admin, token }) => {
 
   return (
     <Layout>
-      <div className="col-md-6 offset-md-3">
-        <h1>Wyślij zaproszenie</h1>
+      <Link href={`/admin`}>
+        <a>Wróć do menu</a>
+      </Link>
+      <br />
+      <br />
+      <h1>Wyślij zaproszenie</h1>
 
-        <br />
-        {success && showSuccessMessage(success)}
-        {error && showErrorMessage(error)}
+      <br />
+      {success && showSuccessMessage(success)}
+      {error && showErrorMessage(error)}
 
-        {inviteForm()}
-      </div>
+      {inviteForm()}
     </Layout>
   );
 };

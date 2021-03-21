@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Router, { withRouter } from "next/router";
+import { withRouter } from "next/router";
 import Layout from "../../../../components/Layout";
+import Link from "next/link";
 import {
   showSuccessMessage,
   showErrorMessage,
 } from "../../../../helpers/alert";
 import jwt from "jsonwebtoken";
+import PasswordStrengthBar from "react-password-strength-bar";
 
 const Reset = ({ router }) => {
   const [state, setState] = useState({
     name: "",
     newPassword: "",
+    confirmPassword: "",
     token: "",
     buttonText: "Zresetuj",
     success: "",
@@ -21,6 +24,7 @@ const Reset = ({ router }) => {
 
   const {
     newPassword,
+    confirmPassword,
     name,
     token,
     buttonText,
@@ -38,12 +42,23 @@ const Reset = ({ router }) => {
     }
   }, [router]);
 
-  const handleChange = (e) => {
-    setState({ ...state, newPassword: e.target.value, error: "", success: "" });
+  const handleChange = (name) => (e) => {
+    setState({
+      ...state,
+      [name]: e.target.value,
+      error: "",
+      success: "",
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (newPassword != confirmPassword) {
+      setState({ ...state, error: "Hasła nie są takie same" });
+      return;
+    }
+
     setState({ ...state, buttonText: "Resetuje...", isDisabled: true });
 
     try {
@@ -75,14 +90,34 @@ const Reset = ({ router }) => {
           <input
             type="password"
             className="form-control"
-            onChange={handleChange}
+            onChange={handleChange("newPassword")}
             value={newPassword}
-            placeholder="Hasło"
+            placeholder="Nowe hasło"
+            required
+          />
+          <PasswordStrengthBar
+            password={newPassword}
+            isRequireed={true}
+            scoreWords={["słabe", "słabe", "ok", "dobre", "świetne"]}
+            shortScoreWord="za krótkie"
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            className="form-control"
+            onChange={handleChange("confirmPassword")}
+            value={confirmPassword}
+            placeholder="Powtórz hasło"
             required
           />
         </div>
         <div>
-          <button className="btn btn-outline-warning" type="submit">
+          <button
+            isDisabled={isDisabled}
+            className="btn btn-outline-warning"
+            type="submit"
+          >
             {buttonText}
           </button>
         </div>
@@ -98,7 +133,16 @@ const Reset = ({ router }) => {
           {success && showSuccessMessage(success)}
           {error && showErrorMessage(error)}
           <br />
-          {passwordResetForm()}
+
+          {!!success ? (
+            <Link href={"/login"}>
+              <a className="btn btn-primary btn-block">
+                Przejdź do strony logowania
+              </a>
+            </Link>
+          ) : (
+            passwordResetForm()
+          )}
         </div>
       </div>
     </Layout>
