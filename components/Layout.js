@@ -14,8 +14,6 @@ Router.events.on("routeChangeError", (url) => NProgress.done());
 
 const Layout = ({ children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [child, setChild] = useState();
-  const [header, setHeader] = useState();
   const [navigation, setNavigation] = useState();
 
   const head = () => (
@@ -117,16 +115,14 @@ const Layout = ({ children }) => {
   };
 
   useEffect(() => {
-    setHeader(head());
     setNavigation(nav());
-    setChild(children);
   }, []);
 
   return (
     <>
-      {header}
+      {head()}
       {navigation}
-      <div className="container pt-5 pb-5">{child}</div>
+      <div className="container pt-5 pb-5">{children}</div>
     </>
   );
 };
