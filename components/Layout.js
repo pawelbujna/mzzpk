@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Router from "next/router";
 import Head from "next/head";
@@ -14,6 +14,9 @@ Router.events.on("routeChangeError", (url) => NProgress.done());
 
 const Layout = ({ children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [child, setChild] = useState();
+  const [header, setHeader] = useState();
+  const [navigation, setNavigation] = useState();
 
   const head = () => (
     <Head>
@@ -34,6 +37,75 @@ const Layout = ({ children }) => {
     </Head>
   );
 
+  const nav = () => (
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <Link href={isAuth() ? "/articles" : "/login"}>
+        <a className="navbar-brand">
+          <img src="/logo.png" alt="MZZPK logo" height="60" />
+        </a>
+      </Link>
+
+      <button
+        className="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        onClick={() => {
+          expandNavbar();
+        }}
+      >
+        <span className="navbar-toggler-icon"></span>
+      </button>
+
+      <div
+        className={`collapse navbar-collapse justify-content-end ${
+          isExpanded ? "show" : ""
+        }`}
+        id="navbarNavAltMarkup"
+      >
+        <div className="navbar-nav">
+          {!isAuth() && (
+            <Link href="/login">
+              <a className="nav-item nav-link mt-1">Login</a>
+            </Link>
+          )}
+
+          {isAuth() && isAuth()?.role === "admin" && (
+            <Link href="/admin">
+              <a className="nav-item nav-link mt-1" suppressHydrationWarning>
+                {isAuth().name}
+              </a>
+            </Link>
+          )}
+
+          {isAuth() && isAuth()?.role !== "admin" && (
+            <Link href="/user">
+              <a className="nav-item nav-link mt-1" suppressHydrationWarning>
+                {isAuth().name}
+              </a>
+            </Link>
+          )}
+
+          {isAuth() ? (
+            <div className="nav-item nav-link">
+              <div
+                className="btn btn-danger btn-sm ml-2"
+                onClick={() => {
+                  handleLogout();
+                }}
+              >
+                Wyloguj
+              </div>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </nav>
+  );
+
   const expandNavbar = () => {
     setIsExpanded(!isExpanded);
   };
@@ -44,76 +116,17 @@ const Layout = ({ children }) => {
     });
   };
 
-  const nav = () => (
-    <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <Link href={isAuth() ? "/articles" : "/login"}>
-          <a className="navbar-brand">
-            <img src="logo.png" alt="MZZPK logo" height="60" />
-          </a>
-        </Link>
-
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-          onClick={() => {
-            expandNavbar();
-          }}
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
-        <div
-          className={`collapse navbar-collapse justify-content-end ${
-            isExpanded ? "show" : ""
-          }`}
-          id="navbarNavAltMarkup"
-        >
-          <div className="navbar-nav">
-            {!isAuth() && (
-              <Link href="/login">
-                <a className="nav-item nav-link mt-1">Login</a>
-              </Link>
-            )}
-
-            {isAuth() && isAuth()?.role === "admin" && (
-              <Link href="/admin">
-                <a className="nav-item nav-link mt-1">{isAuth().name}</a>
-              </Link>
-            )}
-
-            {isAuth() && isAuth()?.role !== "admin" && (
-              <Link href="/user">
-                <a className="nav-item nav-link mt-1">{isAuth().name}</a>
-              </Link>
-            )}
-
-            {isAuth() && (
-              <a
-                className="nav-item nav-link"
-                onClick={() => {
-                  handleLogout();
-                }}
-              >
-                <div className="btn btn-danger btn-sm ml-2">Wyloguj</div>
-              </a>
-            )}
-          </div>
-        </div>
-      </nav>
-    </>
-  );
+  useEffect(() => {
+    setHeader(head());
+    setNavigation(nav());
+    setChild(children);
+  }, []);
 
   return (
     <>
-      {head()}
-      {nav()}
-      <div className="container pt-5 pb-5">{children}</div>
+      {header}
+      {navigation}
+      <div className="container pt-5 pb-5">{child}</div>
     </>
   );
 };
