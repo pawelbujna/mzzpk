@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
       />
       <link rel="stylesheet" href="/static/css/style.css" />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="favicon.ico" />
     </Head>
   );
 
