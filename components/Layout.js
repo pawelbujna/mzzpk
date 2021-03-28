@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Router from "next/router";
+import Head from "next/head";
 
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
@@ -15,7 +16,8 @@ const Layout = ({ children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const head = () => (
-    <>
+    <Head>
+      <title>MZZPK</title>
       <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
@@ -28,7 +30,8 @@ const Layout = ({ children }) => {
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
       />
       <link rel="stylesheet" href="/static/css/style.css" />
-    </>
+      <link rel="icon" href="/favicon.ico" />
+    </Head>
   );
 
   const expandNavbar = () => {
@@ -46,7 +49,7 @@ const Layout = ({ children }) => {
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <Link href={isAuth() ? "/articles" : "/login"}>
           <a className="navbar-brand">
-            <strong>MZZPK</strong>
+            <img src="logo.png" alt="MZZPK logo" height="60" />
           </a>
         </Link>
 

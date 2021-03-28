@@ -10,6 +10,28 @@ const Articles = ({ articles }) => {
 
   return (
     <Layout>
+      <div>
+        <div className="alert alert-warning" role="alert">
+          <h4 className="alert-heading">
+            <strong>Pamiętaj!</strong>
+          </h4>
+          <p>
+            Jeżeli jesteś zalogowany na stronie{" "}
+            <a href="/" className="alert-link">
+              mzzpk.pl
+            </a>{" "}
+            to znaczy, że jesteś członkiem naszej organizacji związkowej.
+            Pamiętaj, że:{" "}
+            <strong>
+              Kopiowanie, przetwarzanie, rozpowszechnianie tych materiałów w
+              całości lub w części bez zgody zarządu związku jest zabronione.
+            </strong>
+          </p>
+        </div>
+      </div>
+
+      <br />
+
       <div className="row">
         <div className="col-md-12">
           <h1 className="font-weight-bold">Ogłoszenia</h1>
